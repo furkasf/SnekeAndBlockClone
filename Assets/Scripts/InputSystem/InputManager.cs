@@ -29,17 +29,16 @@ namespace MyInput
             InputSignals.onEnableInput += OnEnableInput;
             InputSignals.onDisableInput += OnDisableInput;
 
-            //CoreGameSignals.Instance.onPlay += OnPlay;
-            //CoreGameSignals.Instance.onReset += OnReset;
+            InputSignals.onPlay += OnPlay;
+            InputSignals.onPause += OnReset;
         }
 
         private void UnsubscribeEvents()
         {
             InputSignals.onEnableInput -= OnEnableInput;
             InputSignals.onDisableInput -= OnDisableInput;
-
-            //CoreGameSignals.Instance.onPlay -= OnPlay;
-            //CoreGameSignals.Instance.onReset -= OnReset;
+            InputSignals.onPlay -= OnPlay;
+            InputSignals.onPause -= OnReset;
         }
 
         private void OnDisable()
@@ -76,11 +75,17 @@ namespace MyInput
             }
         }
 
-        private void OnEnableInput() => isReadyForTouch = true;
+        private void OnEnableInput()
+        {
+            isReadyForTouch = true;
+        }
 
         private void OnDisableInput() => isReadyForTouch = false;
 
-        private void OnPlay() => isReadyForTouch = true;
+        private void OnPlay()
+        {
+            isReadyForTouch = true;
+        }
 
         private void OnReset()
         {

@@ -3,10 +3,6 @@ using UnityEngine;
 
 namespace GradientSystem
 {
-    /// <summary>
-    /// all copy right belong to furkan tural , you free feel to use or modify but if class help you 
-    /// in a way feel free to send me a mail, all possitive contributions are open
-    /// </summary>
     public static class GradiantSystemManager
     {
         private static List<Gradient> _gradients = new List<Gradient>();
@@ -15,10 +11,12 @@ namespace GradientSystem
         private static ColorData _colorData;
 
         static GradiantSystemManager()
-        {
+        { 
             GetColorData();
             GenarateColorKeysAndAlphas(_colorData.Colors, false);
+            GenarateColorKeysAndAlphas(_colorData.Colors, true);
             GenarateGradiants();
+            _colorData.gradientReflaction = _gradients; // to see results in editor
         }
 
         private static void GetColorData() => _colorData = Resources.Load<ColorData>("Data/ColorData");
@@ -27,6 +25,8 @@ namespace GradientSystem
         {
             float persentage = 0f;
             float ratio;
+
+
             for (int i = 0; i < colors.Count; i++)
             {
                 int colorNumber = colors[i].value.Count;
@@ -72,13 +72,22 @@ namespace GradientSystem
         {
             return _gradients[(int)type].Evaluate(min / max);
         }
+
+        public static Color GetGradiantColorByPersentage(float min, float max, bool useRoundedDecimal ,GradianType type)
+        {
+            float persantage = (float)System.Math.Round(min / max, 2);
+            Debug.Log(persantage);
+            return _gradients[(int)type].Evaluate(min / max);
+        }
     }
 
 
-
+    //extend for specifict pallets
     public enum GradianType
     {
         Sneak,
-        Block
+        Block,
+        block2 = 4
+
     }
 }

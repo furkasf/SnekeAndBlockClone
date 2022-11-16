@@ -1,5 +1,6 @@
-﻿using DG.Tweening;
+﻿using GameCore;
 using GenericPoolSystem;
+using GradientSystem;
 using StackManager;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace Snake
     public class Snake : AbstractSnake
     {
         public override Rigidbody Rigidbody { get => rigidbody; set => rigidbody = value; }
+        public override SnakePowerState PowerState { get => _powerState; set => _powerState = value; }
 
         [SerializeField] private Rigidbody rigidbody;
 
@@ -15,64 +17,62 @@ namespace Snake
         [SerializeField] private Material rawinBowMatarial;
         [SerializeField] private SnakeState snakeState = SnakeState.UnStack;
 
-        private Vector3 _originalScale;
+        private Renderer _renderer;
         private SnakePowerState _powerState = SnakePowerState.Normal;
-        private bool _firstTimeIgnored;
 
         private void Awake()
         {
-            _originalScale = transform.localScale;
+            _renderer = GetComponent<Renderer>();
         }
 
         private void OnEnable()
         {
-            if (_firstTimeIgnored)
-            {
-                Invoke("AddSelfToStack", 0.1f);
-            }
-            _firstTimeIgnored = true;
+            StackSignals.onEnterPowerState += OnEnterPowerMode;
+            AddSelfToStack();
         }
 
         private void OnDisable()
         {
+            StackSignals.onEnterPowerState -= OnEnterPowerMode;
+            if (this == null)
+            {
+                return;
+            }
             SnakeSelfReset();
         }
 
         private void SnakeSelfReset()
         {
-            //spawn partical from pool and put sneake to pool
-            //reset scale
             if (snakeState == SnakeState.InStack)
             {
                 tag = "Untagged";
-                transform.DOScale(0.1f, 0.1f).OnComplete(() =>
-                {
-                    //spawn paricule
-                    GameObject partical = PoolSignals.onGetObjectFormPool("SnakePartical");
-                    partical.transform.position = transform.position;
-                    StackSignals.onRemoveStack();
-                    transform.localScale = _originalScale;
-                    snakeState = SnakeState.UnStack;
-                });
+                GameObject partical = PoolSignals.onGetObjectFormPool?.Invoke("SnakePartical");
+                partical.transform.position = transform.position;
+                StackSignals.onRemoveStack();
+                _renderer.material = standartMaterial;
+                snakeState = SnakeState.UnStack;
             }
         }
 
         private void AddSelfToStack()
         {
-            Debug.Log("addself called");
-            if (snakeState == SnakeState.UnStack)
+            if (snakeState == SnakeState.UnStack && CoreGameSignals.onGamePlay())
             {
+                if (StackSignals.onInPowerStack() == SnakePowerState.Power)
+                {
+                    _renderer.material = rawinBowMatarial;
+                }
                 snakeState = SnakeState.InStack;
                 StackSignals.onAddStack(this);
             }
         }
 
-        //drive abstract function from it
         private void OnEnterPowerMode()
         {
             if (snakeState == SnakeState.UnStack) return;
             _powerState = SnakePowerState.Power;
-            //apply raninbow
+
+            _renderer.material = rawinBowMatarial;
             Invoke("ClosePowerMode", 5f);
         }
 
@@ -80,7 +80,13 @@ namespace Snake
         {
             if (_powerState != SnakePowerState.Power) return;
             _powerState = SnakePowerState.Normal;
-            //return normal material
+            _renderer.material = standartMaterial;
+        }
+
+        public override void GradiantMaterial(float min, float max)
+        {
+            if (_powerState == SnakePowerState.Power) return;
+            _renderer.material.SetColor("_BaseColor", GradiantSystemManager.GetGradiantColorByPersentage((float)min, (float)max, GradianType.Sneak));
         }
     }
 

@@ -7,10 +7,11 @@ namespace Assets.Scripts.Snake
     public class FakeSnake : MonoBehaviour
     {
         [SerializeField] private TMP_Text snakeNumberText;
-        [SerializeField] private int snakeNumber;
+        private int snakeNumber;
 
         private void Awake()
         {
+            snakeNumber = Random.Range(1, 8);
             snakeNumberText.text = snakeNumber.ToString();
         }
 
@@ -34,7 +35,7 @@ namespace Assets.Scripts.Snake
 
         private void OnDisable()
         {
-            snakeNumber = Random.Range(0, 10);
+            snakeNumber = Random.Range(0, 6);
             snakeNumberText.text = snakeNumber.ToString();
         }
     }

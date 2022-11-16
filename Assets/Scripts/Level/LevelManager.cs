@@ -1,6 +1,7 @@
 ﻿using GenericPoolSystem;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using UnityEngine;
 
 namespace Level
@@ -13,7 +14,7 @@ namespace Level
         private LevelLoaderCommand _levelLoaderCommand;
         private ClearActiveLevelCommand _clearActiveLevelCommand;
 
-        private const int _levelLength = 80;
+        private const float _levelLength = 102.2f;
 
         private void Awake()
         {
@@ -44,10 +45,11 @@ namespace Level
             UnSubscribe();
         }
 
+        [ContextMenu(nameof(OnGetNextLevel))]
         private void OnGetNextLevel()
         {
             GameObject level = PoolSignals.onGetObjectFormPool("Level");
-            level.transform.position = levels.Last().position + new Vector3(0, 0, _levelLength);
+            level.transform.position += new Vector3(0, 0, _levelLength);
             levels.Add(level.transform);
             RemoveLevel();
         }

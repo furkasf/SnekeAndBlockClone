@@ -8,8 +8,8 @@ namespace GradientSystem
     
     public class ColorData : ScriptableObject
     {
-        //public List<List<Color>> Colors;
         public List<ColorValueHolder> Colors;
+        public List<Gradient> gradientReflaction;//to see gradiant generation in editor
     }
     [Serializable]
     public class ColorValueHolder

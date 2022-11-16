@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 352f5bda71d871c4fb25688d9f874f32, type: 3}
   m_Name: CD_BoxPartical
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 2685155298606433488, guid: 7944284b6d4fa1b40b61b8685db570dc, type: 3}
+  Prefab: {fileID: 1048381464486473963, guid: b9f5f72504e5a1b4dbc58f9263ea0c9a, type: 3}
   Key: BoxPartical
   InitialSize: 30
   IsExtensible: 1

@@ -17,7 +17,8 @@ public class WobblyText : MonoBehaviour
 
             var verts = textInfo.meshInfo[charInfo.materialReferenceIndex].vertices;
 
-            for (int j = 0; j < 4; ++j)//each char consist of 4 vertices
+            //each char consist of 4 vertices
+            for (int j = 0; j < 4; ++j)
             {
                 var originalPositions = verts[charInfo.vertexIndex + j];
                 //override vertices with with modified version

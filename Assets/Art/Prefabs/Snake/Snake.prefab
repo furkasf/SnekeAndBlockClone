@@ -126,7 +126,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 8803653945916920136}
-  collider: {fileID: 2370588309766984272}
-  standartMaterial: {fileID: 0}
-  rawinBowMatarial: {fileID: 0}
+  standartMaterial: {fileID: 2100000, guid: fb5bb9ffe9619d44da33488a889040ae, type: 2}
+  rawinBowMatarial: {fileID: 2100000, guid: 39314847e8bf73149aa284ae6859ae6d, type: 2}
   snakeState: 1

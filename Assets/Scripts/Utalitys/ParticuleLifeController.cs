@@ -5,14 +5,25 @@ namespace Assets.Scripts
 {
     public class ParticuleLifeController : MonoBehaviour
     {
-        private void OnEnable()
-        {
-            Invoke("PoolBachToPaticule", 2.4f);
-        }
+        [SerializeField] ParticalType particuleType;
+        private bool _firtTimeActive;
+        
 
-        private void PoolBachToPaticule()
+
+        private void OnDisable()
         {
-            PoolSignals.onPutObjectBackToPool(gameObject, "SmallFire");
+            if (!_firtTimeActive)
+            {
+                _firtTimeActive = true;
+                return;
+            }
+            PoolSignals.onPutObjectBackToPool(gameObject, particuleType.ToString());
         }
     }
+    public enum ParticalType
+    {
+        BoxPartical,
+        SnakePartical
+    }
+
 }

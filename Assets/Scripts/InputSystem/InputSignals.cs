@@ -6,6 +6,8 @@ namespace MyInput
     {
         public static Action onEnableInput;
         public static Action onDisableInput;
+        public static Action onPlay;
+        public static Action onPause;
 
         public static Action onFirstTimeTouchTaken;
         public static Action onInputTaken;
